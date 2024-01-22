@@ -1,0 +1,7 @@
+README.md
+.gitignore
+.gitattributes
+.vscode
+**/.git
+**/.DB_Store
+**/node_modules
