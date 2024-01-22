@@ -73,7 +73,7 @@ docker exec -it --user=root setup-php chmod -R 777 /var/www/storage
 #### endereços para acesso:
 ```
 PhpMyAdmin: http://localhost:8888/
-Endereço da api: http://localhost:8080/api/
+Endereço da api: http://localhost:8080/api/v1/
 ```
 
 Developed by Neilton Rodrigues
