@@ -31,6 +31,7 @@ nas seguintes, use:
 gere a chave dr criptografia
 ```
 # docker exec setup-php php artisan key:generate
+# docker exec setup-php php artisan jwt:secret
 ```
 
 rode as migrations para criar as tabelas.

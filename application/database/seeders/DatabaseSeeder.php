@@ -16,6 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('profile')->insert([
+            'name' => 'admin',
+            'created_at' => now(),
+
+        ]);
         DB::table('users')->insert([
             'first_name' => 'admin',
             'last_name' => 'admin',
