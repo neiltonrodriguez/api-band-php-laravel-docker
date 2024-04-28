@@ -5,12 +5,14 @@ namespace App\Http\Controllers\api\v1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Group;
+use App\Models\GroupUser;
 use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
     public function create(Request $r)
     {
+        $u = auth()->user();
         try {
             $group = new Group();
             $group->name = $r->name;
@@ -22,7 +24,14 @@ class GroupController extends Controller
             $group->code = strtoupper($resultado_final);
 
             if ($group->save()) {
-                return response()->json(['status' => 'success', 'data' => $group]);
+                $groupmember = new GroupUser();
+                $groupmember->user_id = $u->id;
+                $groupmember->group_id = $group->id;
+                $groupmember->created_at = now();
+                $groupmember->updated_at = now();
+                if ($groupmember->save()) {
+                    return response()->json(['status' => 'success', 'data' => $group]);
+                }
             }
         } catch (\Exception $e) {
             return response()->json(['error' => true, 'message' => $e->getMessage()], 500);
@@ -32,22 +41,22 @@ class GroupController extends Controller
     {
         $u = auth()->user();
         if ($u->profile_id == 1) {
-        $groups = DB::table('group')
-                    ->join('member_group', 'group.id', '=', 'member_group.group_id')
-                    ->join('member', 'member_group.member_id', '=', 'member.id')
-                    ->select('group.*')
-                    ->get();
-        
-        return response()->json(['status' => 'success', 'data' => $groups]);
-        } else {
-        $groups = DB::table('group')
-            ->join('member_group', 'group.id', '=', 'member_group.group_id')
-            ->join('member', 'member_group.member_id', '=', 'member.id')
-            ->where('member_group.member_id', '=', $id)
-            ->select('group.*')
-            ->get();
+            $groups = DB::table('group')
+                ->join('user_group', 'group.id', '=', 'user_group.group_id')
+                ->join('users', 'user_group.user_id', '=', 'users.id')
+                ->select('group.*')
+                ->get();
 
-        return response()->json(['status' => 'success', 'data' => $groups]);
+            return response()->json(['status' => 'success', 'data' => $groups]);
+        } else {
+            $groups = DB::table('group')
+                ->join('user_group', 'group.id', '=', 'user_group.group_id')
+                ->join('users', 'user_group.user_id', '=', 'users.id')
+                ->where('user_group.user_id', '=', $id)
+                ->select('group.*')
+                ->get();
+
+            return response()->json(['status' => 'success', 'data' => $groups]);
         }
     }
 }

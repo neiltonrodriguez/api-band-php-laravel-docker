@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\GroupMember;
+use App\Models\GroupUser;
 use App\Models\Group;
 
 class GroupMemberController extends Controller
@@ -12,7 +12,7 @@ class GroupMemberController extends Controller
     public function create(Request $r)
     {
         try {
-            $groupmember = new GroupMember();
+            $groupmember = new GroupUser();
             $groupmember->member_id = $r->member_id;
             $group = Group::where('code', '=', $r->code)->first();
             $groupmember->group_id = $group->id;
