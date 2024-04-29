@@ -24,7 +24,7 @@ Route::prefix('v1')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
 
         Route::post('group', [GroupController::class, 'create']);
-        Route::get('group/{id}', [GroupController::class, 'getAll']);
+        Route::get('group/', [GroupController::class, 'getAll']);
         Route::post('group/add-member/', [GroupMemberController::class, 'create']);
 
         Route::post('scale', [ScaleController::class, 'create']);

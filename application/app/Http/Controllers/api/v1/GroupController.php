@@ -37,7 +37,7 @@ class GroupController extends Controller
             return response()->json(['error' => true, 'message' => $e->getMessage()], 500);
         }
     }
-    public function getAll($id)
+    public function getAll()
     {
         $u = auth()->user();
         if ($u->profile_id == 1) {
@@ -52,7 +52,7 @@ class GroupController extends Controller
             $groups = DB::table('group')
                 ->join('user_group', 'group.id', '=', 'user_group.group_id')
                 ->join('users', 'user_group.user_id', '=', 'users.id')
-                ->where('user_group.user_id', '=', $id)
+                ->where('user_group.user_id', '=', $u->id)
                 ->select('group.*')
                 ->get();
 
